@@ -78,9 +78,10 @@ public class FileNode {
     // methods
 
     public boolean isTrackable() {
-        return name.charAt(0) == '.' ||
-                extension.equals(".tmp") ||
-                size > 104857600;
+        if(name.isEmpty()) return false;
+        return !(name.charAt(0) == '.' ||
+                extension.equals("tmp") ||
+                size > 104857600);
     }
 
 
