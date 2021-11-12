@@ -24,8 +24,8 @@ public class FileTree {
 
     private FileNode resolvePath(String path) {
         FileNode currentNode = root;
-        path = path.substring(1);
-        if (path.equals("")) return root;
+        if (path.equals("") || path.equals("/")) return root;
+        path = path.substring(1); // Leveszi az elejéről a / jelet
         for (String fileName : path.split("/")) {
             currentNode = currentNode.getChild(fileName);
 
@@ -37,8 +37,19 @@ public class FileTree {
         return pathNode;
     }
 
+    public List<FileNode> getCurrentDirFiles() {
+        return pathNode.getChildList();
+    }
+
     public boolean changeDirectory(String path) {
-        return (pathNode = resolvePath(path)) != null;
+        pathNode = resolvePath(path);
+        return pathNode.getPath().equals(path);
+    }
+
+    public boolean stepBack() {
+        if(pathNode == root) return false;
+        pathNode = resolvePath(pathNode.getPath().replaceAll("/" + pathNode.getName(), ""));
+        return true;
     }
 
 }

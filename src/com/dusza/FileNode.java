@@ -28,17 +28,18 @@ public class FileNode {
 
         this.isDirectory = path1.charAt(path1.length()-1) == '/' && size == 0;
         if (isDirectory) {
-            path1 = path1.substring(0,path1.length()-2); // leveszi a végéről a / jelet
+            path1 = path1.substring(0,path1.length()-1); // leveszi a végéről a / jelet
             this.name = pathSplit[pathSplit.length - 1];
             this.extension = "";
         } else {
-            this.name = pathSplit[pathSplit.length - 1];
-            String[] nameSplit = name.split("\\.");
+            String tempName = pathSplit[pathSplit.length - 1];
+            String[] nameSplit = tempName.split("\\.");
             this.extension = nameSplit[nameSplit.length - 1];
+            this.name = tempName.replaceAll("\\."+extension, "");
         }
 
         this.path = path1;
-        this.childList = new ArrayList<FileNode>();
+        this.childList = new ArrayList<>();
     }
   
     public FileNode(String str, boolean isRoot) {
@@ -47,7 +48,7 @@ public class FileNode {
             this.path = "";
             this.time = 0;
             this.size = 0;
-            this.childList = new ArrayList<FileNode>();
+            this.childList = new ArrayList<>();
             this.extension = "";
             this.isDirectory = true;
         }
@@ -70,9 +71,8 @@ public class FileNode {
             this.size = Integer.parseInt(split[1]);
             this.time = Integer.parseInt(split[2]);
 
-            this.childList = new ArrayList<FileNode>();
+            this.childList = new ArrayList<>();
         }
-        this.childList = new ArrayList<>();
     }
 
     // methods
@@ -99,7 +99,12 @@ public class FileNode {
     }
 
     public String getFullName() {
-        return name + extension;
+        if(!isDirectory) {
+            return name + "." + extension;
+        } else {
+            return name + "/";
+        }
+
     }
 
     public String getName() {
