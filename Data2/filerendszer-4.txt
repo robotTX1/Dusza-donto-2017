@@ -1,0 +1,4 @@
+/konyvtar2/file2.1.txt 102 100
+/konyvtar1/ 0 1
+/konyvtar2/ 0 2
+/konyvtar2/file2.2.txt 103 5

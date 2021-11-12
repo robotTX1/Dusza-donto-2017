@@ -1,0 +1,8 @@
+/konyvtar1/file1.1.txt 101 3
+/konyvtar1/ 0 1
+/konyvtar2/file2.1.txt 102 4
+/konyvtar2/file2.2.txt 103 5
+/.ponttalkezdodik 1 6
+/konyvtar1/tempfajl.tmp 0 7
+/konyvtar1/nagyfajl.mp4 200000000 8
+/konyvtar2/ 0 2

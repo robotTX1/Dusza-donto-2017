@@ -6,7 +6,7 @@ import java.nio.file.Path;
 public class Main {
 
     public static void main(String[] args) {
-        Path workDir = FileSystems.getDefault().getPath("Data");
+        Path workDir = FileSystems.getDefault().getPath("Data2");
 	    CLI cli = new CLI(workDir);
         cli.start();
     }

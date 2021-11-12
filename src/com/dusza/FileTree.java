@@ -1,5 +1,7 @@
 package com.dusza;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class FileTree {
@@ -10,10 +12,31 @@ public class FileTree {
         root = new FileNode("r/ 0 0", true);
         pathNode = root;
 
+        List<String> dirs = new ArrayList<>();
+
+        String[] split;
+        for (String value : input) {
+            split = value.split(" ");
+            if (split[1].equals("0")) dirs.add(value);
+        }
+
+        dirs.sort((o1, o2) -> {
+            String splt1 = o1.split(" ")[0];
+            String splt2 = o2.split(" ")[0];
+            return splt1.length() - splt2.length();
+        });
+
+        for(String s : input) {
+            if(!dirs.contains(s)) {
+                dirs.add(s);
+            }
+        }
+
+
         String path;
         FileNode parent, newNode;
         // built the tree:
-        for (String line : input) {
+        for (String line : dirs) {
             newNode = new FileNode(line);
 
             resolvePath(newNode.getPath()).addChild(new FileNode(line));
