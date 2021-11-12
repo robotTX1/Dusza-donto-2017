@@ -34,14 +34,19 @@ public class FileTreeManager {
         }
     }
 
-    public List<NodeChange> compare() {
-        List<NodeChange> changes = new ArrayList<>();
+    public List<FileChange> compare() {
+        List<FileChange> changes = new ArrayList<>();
 
 
         return changes;
     }
 
-    public List<String> getFiles() {
-        return currentFileTree.getCurrentDir();
+    public boolean changeDir(String fileName) {
+        return currentFileTree.changeDirectory(fileName);
+    }
+
+    public List<FileNode> getFiles() {
+        return null;
+        //return currentFileTree.getCurrentDir();
     }
 }

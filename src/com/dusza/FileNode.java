@@ -34,7 +34,7 @@ public class FileNode {
         this.size = Integer.parseInt(split[1]);
         this.time = Integer.parseInt(split[2]);
 
-        this.childList = new ArrayList<FileNode>();
+        this.childList = new ArrayList<>();
 
     }
 
@@ -55,6 +55,10 @@ public class FileNode {
             if(node.getName().equals(name)) return node;
         }
         return null;
+    }
+
+    public String getFullName() {
+        return name + extension;
     }
 
     public String getName() {
