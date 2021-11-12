@@ -15,27 +15,64 @@ public class FileNode {
     private final boolean isDirectory;
 
     // constructor
+
     public FileNode(String str) {
+        String path1;
         String[] split = str.split(" ");
         String[] pathSplit = split[0].split("/");
 
-        this.path = split[0];
-
-        this.isDirectory = Objects.equals(pathSplit[pathSplit.length - 1], "");
-        if (isDirectory) {
-            this.name = pathSplit[pathSplit.length - 2];
-            this.extension = "";
-        } else {
-            this.name = pathSplit[pathSplit.length - 1];
-            String[] nameSplit = name.split(" ");
-            this.extension = nameSplit[nameSplit.length - 1];
-        }
+        path1 = split[0];
 
         this.size = Integer.parseInt(split[1]);
         this.time = Integer.parseInt(split[2]);
 
-        this.childList = new ArrayList<>();
+        this.isDirectory = path1.charAt(path1.length()-1) == '/' && size == 0;
+        if (isDirectory) {
+            path1 = path1.substring(0,path1.length()-2); // leveszi a végéről a / jelet
+            this.name = pathSplit[pathSplit.length - 1];
+            this.extension = "";
+        } else {
+            this.name = pathSplit[pathSplit.length - 1];
+            String[] nameSplit = name.split("\\.");
+            this.extension = nameSplit[nameSplit.length - 1];
+        }
 
+        this.path = path1;
+        this.childList = new ArrayList<FileNode>();
+    }
+  
+    public FileNode(String str, boolean isRoot) {
+        if (isRoot) {
+            this.name = "root";
+            this.path = "";
+            this.time = 0;
+            this.size = 0;
+            this.childList = new ArrayList<FileNode>();
+            this.extension = "";
+            this.isDirectory = true;
+        }
+        else {
+            String[] split = str.split(" ");
+            String[] pathSplit = split[0].split("/");
+
+            this.path = split[0];
+
+            this.isDirectory = Objects.equals(pathSplit[pathSplit.length - 1], "");
+            if (isDirectory) {
+                this.name = pathSplit[pathSplit.length - 2];
+                this.extension = "";
+            } else {
+                this.name = pathSplit[pathSplit.length - 1];
+                String[] nameSplit = name.split(" ");
+                this.extension = nameSplit[nameSplit.length - 1];
+            }
+
+            this.size = Integer.parseInt(split[1]);
+            this.time = Integer.parseInt(split[2]);
+
+            this.childList = new ArrayList<FileNode>();
+        }
+        this.childList = new ArrayList<>();
     }
 
     // methods
@@ -47,6 +84,10 @@ public class FileNode {
     }
 
 
+    public void addChild(FileNode fn) {
+        childList.add(fn);
+    }
+
 
     // getters
 
@@ -54,7 +95,7 @@ public class FileNode {
         for (FileNode node: childList) {
             if(node.getName().equals(name)) return node;
         }
-        return null;
+        return this;
     }
 
     public String getFullName() {

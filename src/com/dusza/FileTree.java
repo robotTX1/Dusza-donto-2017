@@ -7,23 +7,28 @@ public class FileTree {
     private FileNode pathNode;
 
     public FileTree(List<String> input) {
-        root = new FileNode("root 0 0");
+        root = new FileNode("r/ 0 0", true);
         pathNode = root;
 
         String path;
-        FileNode parent;
+        FileNode parent, newNode;
         // built the tree:
         for (String line : input) {
-            path = line.split(" ")[0];
-            resolvePath(path).getChildList().add(new FileNode(line));
+            newNode = new FileNode(line);
+
+            resolvePath(newNode.getPath()).addChild(new FileNode(line));
         }
+        System.out.println();
 
     }
 
     private FileNode resolvePath(String path) {
         FileNode currentNode = root;
+        path = path.substring(1);
+        if (path.equals("")) return root;
         for (String fileName : path.split("/")) {
-            currentNode = root.getChild(fileName);
+            currentNode = currentNode.getChild(fileName);
+
         }
         return currentNode;
     }
