@@ -5,8 +5,10 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import static com.dusza.FileTreeManager.FILE_REGEX;
 
@@ -60,8 +62,11 @@ public class CLI {
                 continue;
             }
             if(cmd.matches("^cd .+$")) {
-                if(!fileTreeManager.changeDir(cmd)) {
-                    System.out.println("Nincs ilyen mappa!");
+                String[] split = cmd.split(" ");
+                if(split[1].equals("..")) {
+                    if(!fileTreeManager.stepBack()) System.out.println("Innen már nem léphetsz vissza!");
+                }else if(!fileTreeManager.changeDir(split[1])) {
+                    System.out.println("Nincs ilyen mappa vagy a kiválaszott cél nem mappa!");
                     continue;
                 }
             }
@@ -77,6 +82,8 @@ public class CLI {
         System.out.println("help\t-\tSegítség kiírása.");
         System.out.println("cd mappaNév\t-\tMappa váltás.");
         System.out.println("change\t-\tverzió váltás.");
+        System.out.println("Folytatáshoz nyomj ENTER-t!");
+        input.nextLine();
     }
 
     private void printChanges() {
@@ -86,9 +93,13 @@ public class CLI {
     }
 
     private void printCurrentDir() {
-        for(FileNode f : fileTreeManager.getFiles()) {
-            System.out.println(f.getFullName());
-        }
+        if(!fileTreeManager.getCurrentFileTree().getCurrentDir().getPath().equals("")) System.out.println("..");
+
+        List<FileNode> dirList = fileTreeManager.getCurrentFileTree().getCurrentDirFiles().stream().filter(FileNode::isDirectory).sorted(Comparator.comparing(FileNode::getName)).collect(Collectors.toList());
+        List<FileNode> fileList = fileTreeManager.getCurrentFileTree().getCurrentDirFiles().stream().filter(f -> !f.isDirectory()).sorted(Comparator.comparing(FileNode::getName)).collect(Collectors.toList());
+
+        dirList.forEach(d -> System.out.println(d.getFullName()));
+        fileList.forEach(f -> System.out.println(f.getFullName()));
     }
 
     private void printFiles(List<String> list) {

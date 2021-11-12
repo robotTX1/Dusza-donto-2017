@@ -22,12 +22,15 @@ public class FileTreeManager {
 
     public void loadFile(int index) {
         try {
+            System.out.println(index);
             List<String> readLines = Files.readAllLines(workDir.resolve(FILE_NAME+index+FILE_EXTENSION));
             currentFileTree = new FileTree(readLines);
 
-            if(Files.exists(workDir.resolve(FILE_NAME+index+FILE_EXTENSION))) {
+            if(Files.exists(workDir.resolve(FILE_NAME+(index-1)+FILE_EXTENSION))) {
                 readLines = Files.readAllLines(workDir.resolve(FILE_NAME+(index-1)+FILE_EXTENSION));
                 previousFileTree = new FileTree(readLines);
+            } else {
+                previousFileTree = null;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -42,11 +45,18 @@ public class FileTreeManager {
     }
 
     public boolean changeDir(String fileName) {
-        return currentFileTree.changeDirectory(fileName);
+        return currentFileTree.changeDirectory(currentFileTree.getCurrentDir().getPath() + "/" + fileName);
     }
 
     public List<FileNode> getFiles() {
-        return null;
-        //return currentFileTree.getCurrentDir();
+        return currentFileTree.getCurrentDirFiles();
+    }
+
+    public FileTree getCurrentFileTree() {
+        return currentFileTree;
+    }
+
+    public boolean stepBack() {
+        return currentFileTree.stepBack();
     }
 }
