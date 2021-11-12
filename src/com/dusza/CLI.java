@@ -23,12 +23,22 @@ public class CLI {
 
     public void start() {
         System.out.println("Üdv a Dusza backup alkalmazásban!\nVálasz a beolvasandó verziók közül!\n");
+
+        if(changeVersion(true)) {
+            printChanges();
+            browseTree();
+        }
+
+        System.out.println("Köszönöm, hogy használtad a programot!");
+    }
+
+    private boolean changeVersion(boolean create) {
         List<String> list = readFiles();
         printFiles(list);
 
-
         String cmd;
         int cmdInt;
+
         while(true) {
             cmd = input.nextLine().trim();
 
@@ -36,18 +46,16 @@ public class CLI {
             cmdInt = Integer.parseInt(cmd);
 
             if(cmdInt >= 1 && cmdInt <= list.size()) {
-                fileTreeManager = new FileTreeManager(workDir, cmdInt - 1);
-                browseTree();
-                break;
+                if(create) fileTreeManager = new FileTreeManager(workDir, cmdInt - 1);
+                else fileTreeManager.loadFile(cmdInt - 1);
+                return true;
             }
             else {
                 if(cmdInt == list.size()+1) break;
                 System.out.println("Érvénytelen opció: " + cmdInt);
             }
-
         }
-
-        System.out.println("Köszönöm, hogy használtad a programot!");
+        return false;
     }
 
     private void browseTree() {
@@ -71,25 +79,31 @@ public class CLI {
                 }
             }
             if(cmd.equals("change")) {
-                return;
+                if(changeVersion(false)) {
+                    printChanges();
+                }
             }
-
-
+            if(cmd.equals("exit")) break;
         }
     }
 
     private void help() {
         System.out.println("help\t-\tSegítség kiírása.");
         System.out.println("cd mappaNév\t-\tMappa váltás.");
-        System.out.println("change\t-\tverzió váltás.");
+        System.out.println("change\t-\tVerzió váltás.");
+        System.out.println("exit\t-\tKilépés.");
         System.out.println("Folytatáshoz nyomj ENTER-t!");
         input.nextLine();
     }
 
     private void printChanges() {
-        for(FileChange f : fileTreeManager.compare()) {
+        List<FileChange> changes = fileTreeManager.compare();
+        if(changes == null) return;
+        System.out.println("Változások:");
+        for(FileChange f : changes) {
             System.out.printf("%s %s %d %d\n", f.getChangeType().getType(), f.getFile().getPath(), f.getFile().getSize(), f.getFile().getTime());
         }
+        System.out.println();
     }
 
     private void printCurrentDir() {
