@@ -134,4 +134,5 @@ public class FileNode {
     public boolean isDirectory() {
         return isDirectory;
     }
+
 }
