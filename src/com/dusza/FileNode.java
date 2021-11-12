@@ -38,9 +38,9 @@ public class FileNode {
         }
 
         this.path = path1;
-
         this.childList = new ArrayList<FileNode>();
     }
+  
     public FileNode(String str, boolean isRoot) {
         if (isRoot) {
             this.name = "root";
@@ -72,6 +72,7 @@ public class FileNode {
 
             this.childList = new ArrayList<FileNode>();
         }
+        this.childList = new ArrayList<>();
     }
 
     // methods
@@ -95,6 +96,10 @@ public class FileNode {
             if(node.getName().equals(name)) return node;
         }
         return this;
+    }
+
+    public String getFullName() {
+        return name + extension;
     }
 
     public String getName() {
