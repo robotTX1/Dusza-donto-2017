@@ -1,0 +1,11 @@
+/a/ 0 211
+/a/hello.txt 123 254
+/a/b/ 0 321
+/a/b/read.me 100 568
+/szia.txt 4 200 
+/alma.txt 4 201
+/korte.txt 5 202 
+/c/ 0 203
+/c/d/ 0 204
+/c/c1.txt 1 205
+/c/d/c2.txt 1 206

@@ -1,0 +1,10 @@
+/a/ 0 211
+/a/b/ 0 321
+/a/b/read.me 101 703
+/x/ 0 600
+/szia.txt 4 200 
+/alma.txt 4 201
+/korte.txt 5 202 
+/.gitignore 100 800
+/temp.tmp 50 801
+/x/star.trek.discovery.s01.e01.mp4 128000000 802
